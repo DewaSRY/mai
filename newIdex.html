@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=
+    , initial-scale=1.0"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      :root {
+        --primary: #f2f7a1;
+        --second: #46c2cb;
+      }
+
+      [data-mode="dark"] {
+        --primary: #6d67e4;
+        --second: #453c67;
+      }
+      body {
+        background-color: var(--primary);
+      }
+      .box {
+        background-color: var(--second);
+        width: 300px;
+        height: 300px;
+      }
+    </style>
+
+    <div class="box">hallo</div>
+    <button class="">click med</button>
+    <button class="toSwitch">click me to switch mode</button>
+  </body>
+
+  <script>
+    const buttonToSwitchMode = document.querySelector("button.toSwitch");
+    buttonToSwitchMode.addEventListener("click", () => {
+      const currentMode =
+        document.documentElement.getAttribute("data-mode") || "";
+      console.log(currentMode !== "dark");
+      if (currentMode !== "dark") {
+        document.documentElement.setAttribute("data-mode", "dark");
+      } else {
+        document.documentElement.setAttribute("data-mode", "light");
+      }
+    });
+    const variableOne = "test tet etet";
+    let varaibelTwo = 1;
+
+    console.log(variableOne);
+    function teet() {
+      console.log("tet hallo");
+    }
+  </script>
+</html>

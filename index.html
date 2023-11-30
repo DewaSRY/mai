@@ -1,133 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Light / Dark Mode</title>
-    <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?domain=javascripttutorial.net">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-    <link rel="stylesheet" href="background.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="colors.css">
-</head>
-<body>
-<!-- COLOR THEME SWITCHER -->
-    <div class="theme-switcher_container">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      h1 {
+        text-align: center;
+        font-size: 3rem;
+        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+        font-style: italic;
+      }
 
-    <!-- CURRENT THEME INFO  -->
-        <span class="theme-switcher_mode-info-container">
-            <span class="theme-switcher_mode-text">Light Mode</span>
-            <i class="fas fa-sun"></i>
-        </span>
+      .form-container {
+        padding: 1rem 3rem;
+        border: solid 1px black;
+        border-radius: 12px;
+      }
+      button {
+        padding: 0.5rem 1.5rem;
+        background-color: rgb(151, 249, 4);
+        color: rgb(252, 252, 252);
+        border: none;
+        border-radius: 15px;
+        font-size: 1.3rem;
+        margin: 0.5rem 0;
+      }
+      .cardContainer {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 310px));
+      }
+      .cards {
+        width: 400px;
+        margin: 0.5rem;
+        height: 350px;
+      }
+      img {
+        border-radius: 14px;
+      }
+    </style>
+    <h1>Halloo</h1>
+    <button class="reset-button">Reset image</button>
 
-    <!-- THEME CONTROL -->
-        <label class="theme-switcher_control-label">
-            <input type="checkbox">
-            <div class="theme-switcher_slider-round"></div>
-        </label>
-    </div>
+    <form action="" class="form-container">
+      <label for="start-reting">Start:</label>
+      <input type="range" name="" min="1" max="4" step="1" id="start-reting" />
+      <button>Get paint base on Retting</button>
+    </form>
 
+    <div class="cardContainer"></div>
 
+    <script>
+      // model
+      const imageArray = [
+        "/image/cards-1.png",
+        "/image/cards-2.png",
+        "/image/cards-3.png",
+        "/image/cards-4.png",
+        "/image/cards-5.png",
+        "/image/cards-6.png",
+        "/image/cards-7.png",
+        "/image/cards-8.png",
+        "/image/cards-9.png",
+        "/image/cards-10.png",
+        "/image/cards-11.png",
+        "/image/cards-12.png",
+      ];
+      const paintingFirstName = [
+        "helium",
+        "neon",
+        "argon",
+        "krypton",
+        "xenon",
+        "radon",
+      ];
+      const paintLastName = ["boron", "aluminum", "glum", "indium", "titanium"];
+      class Painting {
+        constructor(imageSrc, paintingRating, paintingName) {
+          this.imageSrc = imageSrc;
+          this.paintingRating = paintingRating;
+          this.paintingName = paintingName;
+        }
 
-<!-- NAV -->
-    <nav class="nav">
-        <h2 class="hidden">Navigation</h2>
-        <a href="#landing">LANDING</a>
-        <a href="#about">ABOUT</a>
-        <a href="#buttons">BUTTONS</a>
-        <a href="#contact">CONTACT</a>
-    </nav>
+        getImageSrc() {
+          return this.imageSrc;
+        }
 
+        getPaintingRetting() {
+          return this.paintingRating;
+        }
+        getPaintingName() {
+          return this.paintingName;
+        }
+      }
+      const getRandom = (range) => {
+        return Math.round(Math.random() * range);
+      };
 
+      // painting array
+      let paintingArray = [];
+      for (let index = 0; index < imageArray.length; index++) {
+        let imageSrc = imageArray[index];
+        let paintingName =
+          paintingFirstName[getRandom(5)] + " " + paintLastName[getRandom(4)];
+        let painting = new Painting(imageSrc, 1 + getRandom(4), paintingName);
 
-<!-- LANDING -->
-    <!-- hint: a div doesn`t create a a semantic section / the h1 in a div can be used as the h1 of the whole document-->
-    <div id="landing" class="landing">
-        <div class="title-group">
-            <h1>Light / Dark Mode</h1>
-            <h2>Welcome to this Trainings Project</h2>
+        paintingArray.push(painting);
+      }
+
+      // ------------------ see what inside array ---------------
+      //   console.log(paintingArray);
+
+      function createPaintingCard(imageSrc, paintingRating, paintingName) {
+        return `  
+        <div class="cards">
+            <img src="${imageSrc}" alt="" width="300" />
+            <h2 >${paintingName}</h2>
+            <span># Retting : ${paintingRating}</span>
         </div>
-    </div>
+        `;
+      }
+      // controller
 
+      const formElement = document.querySelector("form.form-container");
+      const cardsContainer = document.querySelector("div.cardContainer");
+      const resetButton = document.querySelector("button.reset-button");
 
+      function renderingPaint(imageArr, container) {
+        for (let paint of imageArr) {
+          const cardsHtml = createPaintingCard(
+            paint.getImageSrc(),
+            paint.getPaintingRetting(),
+            paint.getPaintingName()
+          );
+          container.insertAdjacentHTML("beforeend", cardsHtml);
+        }
+      }
 
-<!-- ABOUT -->
-    <section id="about" class="about">
-        <h2>About</h2>
+      resetButton.addEventListener("click", () =>
+        renderingPaint(paintingArray, cardsContainer)
+      );
 
-    <!-- Cards -->
-        <div class="about_card-container">
+      formElement.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const rangeValue = e.target.querySelector('input[type="range"]');
+        const parseInteger = +rangeValue.value;
+        console.log(parseInteger);
+        const newArray = sortingPaintingArray(paintingArray, parseInteger);
+        cardsContainer.innerHTML = "";
+        renderingPaint(newArray, cardsContainer);
+      });
 
-        <!-- Mindfulness -->
-            <div class="about_card">
-                <h3>Mindfulness</h3>
+      function sortingPaintingArray(array, matchNumber) {
+        let newArray = [];
+        for (let index = 0; index < array.length; index++) {
+          const paintingRetting = array[index].getPaintingRetting();
+          if (paintingRetting === matchNumber) {
+            newArray.push(array[index]);
+          }
+        }
+        return newArray;
+      }
 
-                <img src="./pics/undraw_mindfulness_light.svg" alt="Mindfulness" class="about_card_img">
+      // rendering first time
 
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, natus maxime obcaecati consequuntur facilis voluptatibus voluptate vitae ipsa, ipsum sint at tempore voluptates rem quidem excepturi, error accusamus incidunt a.</p>
-            </div>
-
-        <!-- Go for a walk -->
-            <div class="about_card">
-                <h3>Go for a walk</h3>
-
-                <img src="./pics/undraw_walking_outside_light.svg" alt="Walking Outside" class="about_card_img">
-
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, natus maxime obcaecati consequuntur facilis voluptatibus voluptate vitae ipsa, ipsum sint at tempore voluptates rem quidem excepturi, error accusamus incidunt a.</p>
-            </div>
-
-        <!-- Programming -->
-            <div class="about_card">
-                <h3>Programming</h3>
-
-                <img src="./pics/undraw_programming_light.svg" alt="Programming" class="about_card_img">
-
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, natus maxime obcaecati consequuntur facilis voluptatibus voluptate vitae ipsa, ipsum sint at tempore voluptates rem quidem excepturi, error accusamus incidunt a.</p>
-            </div>
-
-        </div><!-- Cards End -->
-    </section>
-
-
-
-<!-- Buttons -->
-    <section class="buttons" id="buttons">
-        <h2>Buttons</h2>
-
-    <!-- the Buttons -->
-        <div class="buttons">
-            <button class="primary">Primary</button>
-            <button class="secondary">Secondary</button>
-            <button class="primary" disabled>Disabled</button>
-            <button class="outline">Outline</button>
-            <button class="secondary outline">Alt Outline</button>
-            <button class="outline" disabled>Disabled</button>
-        </div>
-
-    <!-- Text Box-->
-        <div class="text-box">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas, non. Voluptates nesciunt mollitia nam. Necessitatibus sed placeat, eligendi veritatis in iusto dicta! Odit, vel alias ut quos consectetur nemo neque.
-        </div>
-    </section>
-
-
-
-<!-- Contact -->
-    <section class="contact" id="contact">
-        <h2>Contact</h2>
-
-    <!-- Icons -->
-        <div class="social-icons">
-            <i class="fab fa-github"></i>
-            <i class="fab fa-codepen"></i>
-            <i class="fab fa-linkedin-in"></i>
-            <i class="fab fa-medium"></i>
-            <i class="fab fa-instagram"></i>
-            <i class="fab fa-youtube"></i>
-        </div>
-    </section>
-    
-    <script src="script.js"></script>
-</body>
+      renderingPaint(paintingArray, cardsContainer);
+    </script>
+  </body>
 </html>
