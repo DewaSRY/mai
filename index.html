@@ -165,6 +165,14 @@
         return newArray;
       }
 
+      function cleanTheLatter(str) {
+        if (str.length === 0) return "";
+        let indexOfMin = str.indexOf("-");
+        if (indexOfMin < 0) return str;
+        let leftLatter = str.slice(0, indexOfMin - 1);
+        let rightLetter = str.slice(indexOfMin + 2);
+        return cleanTheLatter(leftLatter + rightLetter);
+      }
       // rendering first time
 
       renderingPaint(paintingArray, cardsContainer);
